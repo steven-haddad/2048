@@ -79,8 +79,8 @@ export default {
       board.init(4);
       initBoard();
     },
-    saveGame(){
-      console.log('saveGame')
+    saveGame() {
+      console.log("saveGame");
     },
     changeGameModes() {
       document.getElementById("board").innerHTML = "";
@@ -91,6 +91,25 @@ export default {
   },
   mounted() {
     initBoard();
+
+    //TEST IA
+    let position = ["up", "down", "left", "right"]
+    console.log('test')
+    var ia = () => {
+      setTimeout(() => {
+        board.move(position[Math.floor(Math.random() * position.length)])
+        document.getElementById("board").innerHTML = ""
+        initBoard()
+        this.isFinish = board.over
+        this.score = board.points
+        ia();
+      }, 1500);
+    }
+    ia()
+    //FIN TEST IA
+    
+      
+    
   },
   created() {
     document.addEventListener(
@@ -163,7 +182,7 @@ div#board > div > div {
   position: absolute;
   top: 49%;
 }
-.saveGame{
+.saveGame {
   position: absolute;
   top: 53%;
 }
