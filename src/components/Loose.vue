@@ -13,7 +13,7 @@
         },
         methods:{
             restart(){
-                this.$emit('retry')
+                this.$emit('restart')
             }
         },
         components:{

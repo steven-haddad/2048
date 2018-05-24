@@ -4,7 +4,7 @@
       Votre score est de : {{score}}
     </div>
     <div id="board"></div>
-    <loose @retry="onRestart" v-if="isFinish == true"/>
+    <loose @restart="onRestart" v-if="isFinish == true"/>
   </div>
   
 </template>
@@ -65,10 +65,11 @@ export default {
 
   },
   methods: {
-    onRestart() {
-	  this.board = new Board();
+   onRestart() {
+     console.log("a faire :D")
+	   /* this.board = new Board();
 	  document.getElementById("board").innerHTML = ""
-	  board.init(4)
+	  board.init(4) */
     }
   },
   mounted() {
