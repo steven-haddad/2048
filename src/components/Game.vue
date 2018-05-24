@@ -1,9 +1,16 @@
 <template>    
-  <div id="board"></div>
+  <div id="board">
+    
+      <Loose :board="board" :onrestart="onRestart"></Loose>
+
+    </div>
 </template>
+
+
 
 <script>
 import board from '@/components/Board'
+import Loose from './Loose.vue'
 
 const initBoard = () => {
   board.init(4)
@@ -33,6 +40,11 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+
+      components: {
+           Loose 
+        },
+
   methods: {
     onRestart(){
       this.board = new Board()
@@ -40,8 +52,10 @@ export default {
   },
   mounted () {
     initBoard()
-  }
-}
+  },
+
+
+} 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
