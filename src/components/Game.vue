@@ -1,23 +1,27 @@
 <template>    
- 
-<div class="board"  tabIndex="1">
-       
-</div>
-
-
-
+  <div id="board"></div>
 </template>
 
 <script>
+import board from '@/components/Board'
 
-import Board from '@/Board'
-import Cell from './Cell.vue'
+const initBoard = () => {
+  board.init(4)
 
+  const root = document.getElementById('board')
 
-Board.init(4)
-console.log(Board);
+  board.squares.forEach((line, lIndex) => {    
+    root.appendChild(document.createElement('DIV'))
 
+    line.forEach((column, cIndex) => {
+      const number = column === 0 ? '' : column
+      const columnNumber =  document.createTextNode(number)
+      const span = document.createElement('SPAN').appendChild(columnNumber)
 
+      root.appendChild(span)
+    })
+  })
+}
 
 export default {
   name: 'Game',
@@ -28,14 +32,13 @@ export default {
   },
   methods: {
     onRestart(){
-                this.board = new Board()
-            }      
-    }  
+      this.board = new Board()
+    }      
+  },
+  mounted () {
+    initBoard()
   }
-
-
-
-
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
