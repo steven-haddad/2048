@@ -54,20 +54,18 @@ export default {
   data() {
     return {
       score: 0,
-	  msg: "Welcome to Your Vue.js App",
-	  isFinish: false,
+      msg: "Welcome to Your Vue.js App",
+      isFinish: false
     };
   },
   components: {
     Loose
   },
-  props: {
-
-  },
+  props: {},
   methods: {
-   onRestart() {
-     console.log("a faire :D")
-	   /* this.board = new Board();
+    onRestart() {
+      console.log("a faire :D");
+      /* this.board = new Board();
 	  document.getElementById("board").innerHTML = ""
 	  board.init(4) */
     }
@@ -81,14 +79,14 @@ export default {
       event => {
         board.move(event.code.replace("Arrow", "").toLowerCase());
         document.getElementById("board").innerHTML = "";
-		initBoard();
-		console.log(board.isOver())
-		if(board.isOver() == true){
-			this.isFinish = true
-		}
-		else{
-			this.isFinish = false
-		}
+        initBoard();
+        console.log(board.isOver());
+        if (board.isOver() == true) {
+          this.isFinish = true;
+        } else {
+          this.score = board.points;
+          this.isFinish = false;
+        }
       },
       false
     );
@@ -137,18 +135,18 @@ div#board > div > div {
   margin: 10px;
   border-radius: 10px;
 }
-.overlay{
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0, .5);
-	position: absolute;
-	z-index: 10000;
-	top: 0px;
-	left: 0px;
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 10000;
+  top: 0px;
+  left: 0px;
 }
-.tryAgain{
-	position: absolute;
-	margin: auto;
-	top: 49%;
+.tryAgain {
+  position: absolute;
+  margin: auto;
+  top: 49%;
 }
 </style>
