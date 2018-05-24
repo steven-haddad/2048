@@ -1,8 +1,15 @@
 <template>    
+ 
+
+
+
 
 </template>
 
 <script>
+
+import http from '@/board'
+
 export default {
   name: 'Game',
   data () {
