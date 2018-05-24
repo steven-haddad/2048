@@ -4,7 +4,15 @@
       Votre score est de : {{score}}
     </div>
     <div id="board"></div>
-    <loose @restart="onRestart" v-if="isFinish == true"/>
+    <div>
+    Nombre de carrés :
+    <select v-model="selectList" id="selectListNumberSquare" @change="changeGameModes">
+      <option value="4" selected>4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+    </div>
+    <loose @restart="onRestart" v-if="isFinish == true" @saveGame="saveGame"/>
   </div>
   
 </template>
@@ -55,7 +63,8 @@ export default {
     return {
       score: 0,
       msg: "Welcome to Your Vue.js App",
-      isFinish: false
+      isFinish: false,
+      selectList: 4
     };
   },
   components: {
@@ -64,12 +73,20 @@ export default {
   props: {},
   methods: {
     onRestart() {
-      console.log("a faire :D");
-      document.getElementById("board").innerHTML = ""
-      this.isFinish = false
-      this.score = 0
-      board.init(4)
-      initBoard()
+      document.getElementById("board").innerHTML = "";
+      this.isFinish = false;
+      this.score = 0;
+      board.init(4);
+      initBoard();
+    },
+    saveGame(){
+      console.log('saveGame')
+    },
+    changeGameModes() {
+      document.getElementById("board").innerHTML = "";
+      this.score = 0;
+      board.init(this.selectList);
+      initBoard();
     }
   },
   mounted() {
@@ -79,11 +96,11 @@ export default {
     document.addEventListener(
       "keyup",
       event => {
-        board.move(event.code.replace("Arrow", "").toLowerCase())
-        document.getElementById("board").innerHTML = ""
-        initBoard()
-        this.isFinish = board.over
-        this.score = board.points
+        board.move(event.code.replace("Arrow", "").toLowerCase());
+        document.getElementById("board").innerHTML = "";
+        initBoard();
+        this.isFinish = board.over;
+        this.score = board.points;
       },
       false
     );
@@ -140,10 +157,14 @@ div#board > div > div {
   z-index: 10000;
   top: 0px;
   left: 0px;
+  text-align: center;
 }
 .tryAgain {
   position: absolute;
-  margin: auto;
   top: 49%;
+}
+.saveGame{
+  position: absolute;
+  top: 53%;
 }
 </style>
