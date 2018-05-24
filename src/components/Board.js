@@ -46,7 +46,7 @@ class Board {
         }
       }
     }
-    console.debug('this.squares: ', this.squares)
+    console.debug(this.squares)
   }
   get (x, y) {
     return this.squares[x][y]
@@ -151,8 +151,8 @@ class Board {
   }
   addSquaresIfNeeded (x1, y1, x2, y2) {
     if (this.squares[x1][y1] === this.squares[x2][y2]) {
-      this.stack.push('ADD', x1, y1, x2, y2)
-      return true
+        this.stack.push('ADD', x1, y1, x2, y2)
+        return true
     }
     return false
   }
@@ -197,9 +197,7 @@ class Board {
           this.squares[x][y] = 0
           this.hasMoved = true
         } else {
-          if (this.addSquaresIfNeeded(x, y, x + 1, y)) {
-            x--
-          }
+          this.addSquaresIfNeeded(x, y, x + 1, y)
         }
         x++
       }

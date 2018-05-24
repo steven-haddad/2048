@@ -9,67 +9,72 @@
 </template>
 
 <script>
-import board from '@/components/Board'
+import board from "@/components/Board";
 
 const initBoard = () => {
   board.init(4)
 
-  const root = document.getElementById('board')
+  const root = document.getElementById("board")
 
-  board.squares.forEach((line, lIndex) => {   
-    const div =  document.createElement('DIV')
+  board.squares.forEach(column => {
+    const div = document.createElement("DIV")
 
     root.appendChild(div)
 
-    line.forEach((column, cIndex) => {
-      const number = column === 0 ? '' : column
-      const span = document.createElement('SPAN')
+    column.forEach( line => {
+      const number = line === 0 ? "" : line
+      const span = document.createElement("DIV")
 
-      span.innerText = number
-      if(number == ''){
-        span.style.backgroundColor = 'rgb(205,193,180)'
-      }
-      else if(number == 2){
-        span.style.backgroundColor = 'rgb(240, 233, 226)'
-      }
-      else if(number == 4){
-        span.style.backgroundColor = 'rgb(237, 224, 200)'
-      }
-      else if(number == 8){
-        span.style.backgroundColor = 'rgb(242, 177, 121)'
-        span.style.color = 'white'
-      }
-      else if(number == 16){
-        span.style.backgroundColor = 'rgb(254, 149, 99)'
-        span.style.color = 'white'
+      span.innerText = number;
+      if (number == "") {
+        span.style.backgroundColor = "rgb(205,193,180)"
+      } else if (number == 2) {
+        span.style.backgroundColor = "rgb(240, 233, 226)"
+      } else if (number == 4) {
+        span.style.backgroundColor = "rgb(237, 224, 200)"
+      } else if (number == 8) {
+        span.style.backgroundColor = "rgb(242, 177, 121)"
+        span.style.color = "white"
+      } else if (number == 16) {
+        span.style.backgroundColor = "rgb(254, 149, 99)"
+        span.style.color = "white"
       }
       div.appendChild(span)
-    })
-  })
-}
+    });
+  });
+};
+
+document.addEventListener(
+  "keyup",
+  function(event) {
+    board.move(event.code.replace('Arrow', '').toLowerCase())
+  },
+  false
+);
 
 export default {
-  name: 'Game',
-  data () {
+  name: "Game",
+  data() {
     return {
       score: 0,
-      msg: 'Welcome to Your Vue.js App'
-    }
+      msg: "Welcome to Your Vue.js App"
+    };
   },
   methods: {
-    onRestart(){
-      this.board = new Board()
-    }      
+    onRestart() {
+      this.board = new Board();
+    }
   },
-  mounted () {
-    initBoard()
+  mounted() {
+    initBoard();
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 ul {
@@ -84,17 +89,24 @@ a {
   color: #42b983;
 }
 
-#board{
+#scoreUser {
+  font-size: 40px;
+}
+
+#board {
   border: solid 1px rgb(187, 173, 160);
   padding: 20px;
   display: inline-block;
   background-color: rgb(187, 173, 160);
 }
-div#board > div > span{
+#board > div{
+  display: inline-block;
+  vertical-align: top;
+}
+div#board > div > div {
   width: 160px;
   height: 140px;
   font-size: 100px;
-  display: inline-block;
   padding-top: 20px;
   vertical-align: top;
   margin: 10px;
