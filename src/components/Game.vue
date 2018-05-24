@@ -65,9 +65,11 @@ export default {
   methods: {
     onRestart() {
       console.log("a faire :D");
-      /* this.board = new Board();
-	  document.getElementById("board").innerHTML = ""
-	  board.init(4) */
+      document.getElementById("board").innerHTML = ""
+      this.isFinish = false
+      this.score = 0
+      board.init(4)
+      initBoard()
     }
   },
   mounted() {
@@ -77,16 +79,11 @@ export default {
     document.addEventListener(
       "keyup",
       event => {
-        board.move(event.code.replace("Arrow", "").toLowerCase());
-        document.getElementById("board").innerHTML = "";
-        initBoard();
-        console.log(board.isOver());
-        if (board.isOver() == true) {
-          this.isFinish = true;
-        } else {
-          this.score = board.points;
-          this.isFinish = false;
-        }
+        board.move(event.code.replace("Arrow", "").toLowerCase())
+        document.getElementById("board").innerHTML = ""
+        initBoard()
+        this.isFinish = board.over
+        this.score = board.points
       },
       false
     );
@@ -127,10 +124,10 @@ a {
   vertical-align: top;
 }
 div#board > div > div {
-  width: 160px;
-  height: 140px;
-  font-size: 100px;
-  padding-top: 20px;
+  width: 100px;
+  height: 75px;
+  font-size: 40px;
+  padding-top: 25px;
   vertical-align: top;
   margin: 10px;
   border-radius: 10px;
