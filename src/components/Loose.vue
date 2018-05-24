@@ -23,10 +23,10 @@
         },
         computed:{
             show(){
-                this.Board.isOver()
+                this.board.isOver()
             },
             contents(){
-                if(this.Board.isOver()){
+                if(this.board.isOver()){
                     return 'GameOver!'
             
                 }
@@ -41,3 +41,9 @@
         }
     }
 </script>
+
+<style>
+.overlay {
+  font-weight: normal;
+}
+</style>

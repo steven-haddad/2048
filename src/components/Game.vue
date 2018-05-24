@@ -9,8 +9,11 @@
 
 
 <script>
-import board from '@/components/Board'
+import board from '@/components/board'
 import Loose from './Loose.vue'
+
+
+  console.debug(Loose.restart);
 
 const initBoard = () => {
   board.init(4)
@@ -29,6 +32,8 @@ const initBoard = () => {
 
       span.innerText = columnNumber
       div.appendChild(span)
+     
+    
     })
   })
 }
@@ -47,7 +52,7 @@ export default {
 
   methods: {
     onRestart(){
-      this.board = new Board()
+     this.board = new Board()
     }      
   },
   mounted () {
