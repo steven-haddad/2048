@@ -1,5 +1,11 @@
-<template>    
-  <div id="board"></div>
+<template>
+  <div id="root">
+    <div id="scoreUser">
+      Votre score est de : {{score}}
+    </div>
+    <div id="board"></div>
+  </div>
+  
 </template>
 
 <script>
@@ -17,10 +23,26 @@ const initBoard = () => {
 
     line.forEach((column, cIndex) => {
       const number = column === 0 ? '' : column
-      const columnNumber =  number
       const span = document.createElement('SPAN')
 
-      span.innerText = columnNumber
+      span.innerText = number
+      if(number == ''){
+        span.style.backgroundColor = 'rgb(205,193,180)'
+      }
+      else if(number == 2){
+        span.style.backgroundColor = 'rgb(240, 233, 226)'
+      }
+      else if(number == 4){
+        span.style.backgroundColor = 'rgb(237, 224, 200)'
+      }
+      else if(number == 8){
+        span.style.backgroundColor = 'rgb(242, 177, 121)'
+        span.style.color = 'white'
+      }
+      else if(number == 16){
+        span.style.backgroundColor = 'rgb(254, 149, 99)'
+        span.style.color = 'white'
+      }
       div.appendChild(span)
     })
   })
@@ -30,6 +52,7 @@ export default {
   name: 'Game',
   data () {
     return {
+      score: 0,
       msg: 'Welcome to Your Vue.js App'
     }
   },
@@ -62,22 +85,19 @@ a {
 }
 
 #board{
-  width: 800px;
-  height: 800px;
-  border: solid 1px black;
-  margin: auto;
-}
-div#board > div{
-  width: 100%;
-  height: 24.75%;
-  border: solid 1px red;
+  border: solid 1px rgb(187, 173, 160);
+  padding: 20px;
+  display: inline-block;
+  background-color: rgb(187, 173, 160);
 }
 div#board > div > span{
-  width: 24.75%;
-  height: 79%;
-  border: solid 1px green;
+  width: 160px;
+  height: 140px;
   font-size: 100px;
-  float: left;
-  padding-top: 5%;
+  display: inline-block;
+  padding-top: 20px;
+  vertical-align: top;
+  margin: 10px;
+  border-radius: 10px;
 }
 </style>
