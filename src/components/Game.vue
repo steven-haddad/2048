@@ -66,9 +66,8 @@ export default {
   },
   methods: {
     onRestart() {
-	  this.board = new Board();
-	  document.getElementById("board").innerHTML = ""
-	  board.init(4)
+ 
+   location.reload(); 
     }
   },
   mounted() {

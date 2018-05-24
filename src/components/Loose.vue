@@ -4,7 +4,11 @@
     </div>
 </template>
 
+
+
 <script>
+import game from "@/components/Game.vue";
+
 
     export default{
         data(){
@@ -14,6 +18,9 @@
         methods:{
             restart(){
                 this.$emit('retry')
+              game.initBoard();
+              
+              
             }
         },
         components:{
