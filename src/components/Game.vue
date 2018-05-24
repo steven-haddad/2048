@@ -10,47 +10,44 @@
 
 <script>
 import board from "@/components/Board";
+  
+board.init(4);
 
 const initBoard = () => {
-  board.init(4)
 
-  const root = document.getElementById("board")
+  const root = document.getElementById("board");
 
   board.squares.forEach(column => {
-    const div = document.createElement("DIV")
+    const div = document.createElement("DIV");
 
-    root.appendChild(div)
+    root.appendChild(div);
 
-    column.forEach( line => {
-      const number = line === 0 ? "" : line
-      const span = document.createElement("DIV")
+    column.forEach(line => {
+      const number = line === 0 ? "" : line;
+      const span = document.createElement("DIV");
 
       span.innerText = number;
       if (number == "") {
-        span.style.backgroundColor = "rgb(205,193,180)"
+        span.style.backgroundColor = "rgb(205,193,180)";
       } else if (number == 2) {
-        span.style.backgroundColor = "rgb(240, 233, 226)"
+        span.style.backgroundColor = "rgb(240, 233, 226)";
       } else if (number == 4) {
-        span.style.backgroundColor = "rgb(237, 224, 200)"
+        span.style.backgroundColor = "rgb(237, 224, 200)";
       } else if (number == 8) {
-        span.style.backgroundColor = "rgb(242, 177, 121)"
-        span.style.color = "white"
+        span.style.backgroundColor = "rgb(242, 177, 121)";
+        span.style.color = "white";
       } else if (number == 16) {
-        span.style.backgroundColor = "rgb(254, 149, 99)"
-        span.style.color = "white"
+        span.style.backgroundColor = "rgb(254, 149, 99)";
+        span.style.color = "white";
       }
-      div.appendChild(span)
+      else{
+        span.style.backgroundColor = "grey";
+        span.style.color = "white";
+      }
+      div.appendChild(span);
     });
   });
 };
-
-document.addEventListener(
-  "keyup",
-  function(event) {
-    board.move(event.code.replace('Arrow', '').toLowerCase())
-  },
-  false
-);
 
 export default {
   name: "Game",
@@ -67,6 +64,18 @@ export default {
   },
   mounted() {
     initBoard();
+    
+  },
+  created(){
+    document.addEventListener(
+      "keyup",
+      event => {
+        board.move(event.code.replace("Arrow", "").toLowerCase());
+        document.getElementById("board").innerHTML = "";
+        initBoard();
+      },
+      false
+    );
   }
 };
 </script>
@@ -99,7 +108,7 @@ a {
   display: inline-block;
   background-color: rgb(187, 173, 160);
 }
-#board > div{
+#board > div {
   display: inline-block;
   vertical-align: top;
 }
