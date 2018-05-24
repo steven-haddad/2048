@@ -1,6 +1,8 @@
 <template>    
  
-
+<div class="board"  tabIndex="1">
+       
+</div>
 
 
 
@@ -9,6 +11,8 @@
 <script>
 
 import Board from '@/Board'
+import Cell from './Cell.vue'
+
 
 Board.init(4)
 console.log(Board);
@@ -23,15 +27,15 @@ export default {
     }
   },
   methods: {
-
-
-
-
+    onRestart(){
+                this.board = new Board()
+            }      
+    }  
   }
 
 
 
-}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
