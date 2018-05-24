@@ -4,17 +4,18 @@
       Votre score est de : {{score}}
     </div>
     <div id="board"></div>
+    <loose @retry="onRestart" v-if="isFinish == true"/>
   </div>
   
 </template>
 
 <script>
 import board from "@/components/Board";
-  
+import Loose from "./Loose";
+
 board.init(4);
 
 const initBoard = () => {
-
   const root = document.getElementById("board");
 
   board.squares.forEach(column => {
@@ -39,8 +40,7 @@ const initBoard = () => {
       } else if (number == 16) {
         span.style.backgroundColor = "rgb(254, 149, 99)";
         span.style.color = "white";
-      }
-      else{
+      } else {
         span.style.backgroundColor = "grey";
         span.style.color = "white";
       }
@@ -54,25 +54,40 @@ export default {
   data() {
     return {
       score: 0,
-      msg: "Welcome to Your Vue.js App"
+	  msg: "Welcome to Your Vue.js App",
+	  isFinish: false,
     };
+  },
+  components: {
+    Loose
+  },
+  props: {
+
   },
   methods: {
     onRestart() {
-      this.board = new Board();
+	  this.board = new Board();
+	  document.getElementById("board").innerHTML = ""
+	  board.init(4)
     }
   },
   mounted() {
     initBoard();
-    
   },
-  created(){
+  created() {
     document.addEventListener(
       "keyup",
       event => {
         board.move(event.code.replace("Arrow", "").toLowerCase());
         document.getElementById("board").innerHTML = "";
-        initBoard();
+		initBoard();
+		console.log(board.isOver())
+		if(board.isOver() == true){
+			this.isFinish = true
+		}
+		else{
+			this.isFinish = false
+		}
       },
       false
     );
@@ -120,5 +135,19 @@ div#board > div > div {
   vertical-align: top;
   margin: 10px;
   border-radius: 10px;
+}
+.overlay{
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, .5);
+	position: absolute;
+	z-index: 10000;
+	top: 0px;
+	left: 0px;
+}
+.tryAgain{
+	position: absolute;
+	margin: auto;
+	top: 49%;
 }
 </style>
