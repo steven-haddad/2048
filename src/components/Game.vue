@@ -92,7 +92,7 @@ export default {
   mounted() {
     initBoard();
 
-    //TEST IA
+    //TEST IA ---- A COMMENTER POUR JOUER SOIS MEME
     let position = ["up", "down", "left", "right"]
     console.log('test')
     var ia = () => {
