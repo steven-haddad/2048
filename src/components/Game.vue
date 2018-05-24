@@ -10,15 +10,18 @@ const initBoard = () => {
 
   const root = document.getElementById('board')
 
-  board.squares.forEach((line, lIndex) => {    
-    root.appendChild(document.createElement('DIV'))
+  board.squares.forEach((line, lIndex) => {   
+    const div =  document.createElement('DIV')
+
+    root.appendChild(div)
 
     line.forEach((column, cIndex) => {
       const number = column === 0 ? '' : column
-      const columnNumber =  document.createTextNode(number)
-      const span = document.createElement('SPAN').appendChild(columnNumber)
+      const columnNumber =  number
+      const span = document.createElement('SPAN')
 
-      root.appendChild(span)
+      span.innerText = columnNumber
+      div.appendChild(span)
     })
   })
 }
@@ -42,7 +45,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 h1, h2 {
   font-weight: normal;
 }
@@ -56,5 +59,25 @@ li {
 }
 a {
   color: #42b983;
+}
+
+#board{
+  width: 800px;
+  height: 800px;
+  border: solid 1px black;
+  margin: auto;
+}
+div#board > div{
+  width: 100%;
+  height: 24.75%;
+  border: solid 1px red;
+}
+div#board > div > span{
+  width: 24.75%;
+  height: 79%;
+  border: solid 1px green;
+  font-size: 100px;
+  float: left;
+  padding-top: 5%;
 }
 </style>
