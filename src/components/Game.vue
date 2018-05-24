@@ -8,7 +8,12 @@
 
 <script>
 
-import http from '@/board'
+import Board from '@/Board'
+
+Board.init(4)
+console.log(Board);
+
+
 
 export default {
   name: 'Game',
@@ -16,7 +21,16 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  methods: {
+
+
+
+
   }
+
+
+
 }
 </script>
 
