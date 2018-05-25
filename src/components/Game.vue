@@ -4,7 +4,15 @@
       Votre score est de : {{score}}
     </div>
     <div id="board"></div>
-    <loose @retry="onRestart" v-if="isFinish == true"/>
+    <div>
+    Nombre de carrés :
+    <select v-model="selectList" id="selectListNumberSquare" @change="changeGameModes">
+      <option value="4" selected>4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
+    </div>
+    <loose @restart="onRestart" v-if="isFinish == true" @saveGame="saveGame"/>
   </div>
   
 </template>
@@ -54,24 +62,54 @@ export default {
   data() {
     return {
       score: 0,
-	  msg: "Welcome to Your Vue.js App",
-	  isFinish: false,
+      msg: "Welcome to Your Vue.js App",
+      isFinish: false,
+      selectList: 4
     };
   },
   components: {
     Loose
   },
-  props: {
-
-  },
+  props: {},
   methods: {
     onRestart() {
- 
-   location.reload(); 
+      document.getElementById("board").innerHTML = "";
+      this.isFinish = false;
+      this.score = 0;
+      board.init(4);
+      initBoard();
+    },
+    saveGame() {
+      console.log("saveGame");
+    },
+    changeGameModes() {
+      document.getElementById("board").innerHTML = "";
+      this.score = 0;
+      board.init(this.selectList);
+      initBoard();
     }
   },
   mounted() {
     initBoard();
+
+    //TEST IA ---- A COMMENTER POUR JOUER SOIS MEME
+    let position = ["up", "down", "left", "right"]
+    console.log('test')
+    var ia = () => {
+      setTimeout(() => {
+        board.move(position[Math.floor(Math.random() * position.length)])
+        document.getElementById("board").innerHTML = ""
+        initBoard()
+        this.isFinish = board.over
+        this.score = board.points
+        ia();
+      }, 500);
+    }
+    ia()
+    //FIN TEST IA
+    
+      
+    
   },
   created() {
     document.addEventListener(
@@ -79,14 +117,9 @@ export default {
       event => {
         board.move(event.code.replace("Arrow", "").toLowerCase());
         document.getElementById("board").innerHTML = "";
-		initBoard();
-		console.log(board.isOver())
-		if(board.isOver() == true){
-			this.isFinish = true
-		}
-		else{
-			this.isFinish = false
-		}
+        initBoard();
+        this.isFinish = board.over;
+        this.score = board.points;
       },
       false
     );
@@ -127,26 +160,30 @@ a {
   vertical-align: top;
 }
 div#board > div > div {
-  width: 160px;
-  height: 140px;
-  font-size: 100px;
-  padding-top: 20px;
+  width: 100px;
+  height: 75px;
+  font-size: 40px;
+  padding-top: 25px;
   vertical-align: top;
   margin: 10px;
   border-radius: 10px;
 }
-.overlay{
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0,0,0, .5);
-	position: absolute;
-	z-index: 10000;
-	top: 0px;
-	left: 0px;
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 10000;
+  top: 0px;
+  left: 0px;
+  text-align: center;
 }
-.tryAgain{
-	position: absolute;
-	margin: auto;
-	top: 49%;
+.tryAgain {
+  position: absolute;
+  top: 49%;
+}
+.saveGame {
+  position: absolute;
+  top: 53%;
 }
 </style>
