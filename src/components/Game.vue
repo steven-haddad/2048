@@ -3,7 +3,12 @@
     <div id="scoreUser">
       Votre score est de : {{score}}
     </div>
-    <div id="board"></div>
+    <div id="board">
+      <div v-for="(column, cIndex) in board.squares"
+        :key="cIndex">
+        <div :class="getTileColor(line)" v-for="(line, lIndex) in column" :key="lIndex">{{ line === 0 ? '' : line }}</div>
+      </div>
+    </div>
     <div>
     Nombre de carrés :
     <select v-model="selectList" id="selectListNumberSquare" @change="changeGameModes">
@@ -18,49 +23,16 @@
 </template>
 
 <script>
-import board from "@/components/Board";
+import Board from "@/components/Board";
 import Loose from "./Loose";
-
-board.init(4);
-
-const initBoard = () => {
-  const root = document.getElementById("board");
-
-  board.squares.forEach(column => {
-    const div = document.createElement("DIV");
-
-    root.appendChild(div);
-
-    column.forEach(line => {
-      const number = line === 0 ? "" : line;
-      const span = document.createElement("DIV");
-
-      span.innerText = number;
-      if (number == "") {
-        span.style.backgroundColor = "rgb(205,193,180)";
-      } else if (number == 2) {
-        span.style.backgroundColor = "rgb(240, 233, 226)";
-      } else if (number == 4) {
-        span.style.backgroundColor = "rgb(237, 224, 200)";
-      } else if (number == 8) {
-        span.style.backgroundColor = "rgb(242, 177, 121)";
-        span.style.color = "white";
-      } else if (number == 16) {
-        span.style.backgroundColor = "rgb(254, 149, 99)";
-        span.style.color = "white";
-      } else {
-        span.style.backgroundColor = "grey";
-        span.style.color = "white";
-      }
-      div.appendChild(span);
-    });
-  });
-};
 
 export default {
   name: "Game",
   data() {
     return {
+      board: {
+        squares: [],
+      },
       score: 0,
       msg: "Welcome to Your Vue.js App",
       isFinish: false,
@@ -72,54 +44,73 @@ export default {
   },
   props: {},
   methods: {
+    initializeBoard (boardLength) {
+      this.board = Board
+      if (!boardLength) {
+        this.board.init(4)
+      } else {
+        this.board.init(boardLength)
+      }
+    },
+    getTileColor(tileValue) {
+      let className = ''
+
+      if (tileValue == "") {
+        className = 'empty-tile'
+      } else if (tileValue == 2) {
+        className = 'two-tile'
+      } else if (tileValue == 4) {
+        className = 'four-tile'        
+      } else if (tileValue == 8) {
+        className = 'eight-tile'
+      } else if (tileValue == 16) {
+        className = 'sixteen-tile'
+      } else {
+        className = 'big-tile'        
+      }
+
+      return className
+    },
     onRestart() {
-      document.getElementById("board").innerHTML = "";
+      this.$forceUpdate()      
       this.isFinish = false;
       this.score = 0;
-      board.init(4);
-      initBoard();
+      this.initializeBoard();
     },
     saveGame() {
       console.log("saveGame");
     },
     changeGameModes() {
-      document.getElementById("board").innerHTML = "";
+      this.$forceUpdate()      
       this.score = 0;
-      board.init(this.selectList);
-      initBoard();
+      this.initializeBoard(this.selectList);
     }
   },
   mounted() {
-    initBoard();
-
     //TEST IA ---- A COMMENTER POUR JOUER SOIS MEME
     let position = ["up", "down", "left", "right"]
     console.log('test')
     var ia = () => {
       setTimeout(() => {
-        board.move(position[Math.floor(Math.random() * position.length)])
-        document.getElementById("board").innerHTML = ""
-        initBoard()
-        this.isFinish = board.over
-        this.score = board.points
+        this.board.move(position[Math.floor(Math.random() * position.length)])
+        this.$forceUpdate()
+        this.isFinish = this.board.over
+        this.score = this.board.points
         ia();
       }, 500);
     }
     ia()
     //FIN TEST IA
-    
-      
-    
   },
   created() {
+    this.initializeBoard();
     document.addEventListener(
       "keyup",
       event => {
-        board.move(event.code.replace("Arrow", "").toLowerCase());
-        document.getElementById("board").innerHTML = "";
-        initBoard();
-        this.isFinish = board.over;
-        this.score = board.points;
+        this.board.move(event.code.replace("Arrow", "").toLowerCase());
+        this.$forceUpdate()
+        this.isFinish = this.board.over;
+        this.score = this.board.points;
       },
       false
     );
@@ -127,7 +118,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
 h1,
 h2 {
@@ -186,4 +176,26 @@ div#board > div > div {
   position: absolute;
   top: 53%;
 }
+.empty-tile {
+  background-color: rgb(205,193,180);
+}
+.two-tile {
+  background-color: rgb(240, 233, 226);
+}
+.four-tile {
+  background-color: rgb(237, 224, 200);
+}
+.eight-tile {
+  color: white;
+  background-color: rgb(242, 177, 121);
+}
+.sixteen-tile {
+  color: white;
+  background-color: rgb(254, 149, 99);
+}
+.big-tile {
+  color: white;
+  background-color: grey;
+}
+
 </style>
