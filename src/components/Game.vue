@@ -17,27 +17,27 @@
       <option value="6">6</option>
     </select>
     </div>
-    <loose @restart="onRestart" v-if="isFinish == true" @saveGame="saveGame"/>
+    <loose @restart="onRestart" v-if="board.over == true"/>
   </div>
   
 </template>
 
 <script>
-import Board from "@/components/Board";
-import Loose from "./Loose";
+import Board from "@/components/Board"
+import Loose from "@/components/Loose"
+import http from "@/utils/http"
 
 export default {
   name: "Game",
   data() {
     return {
-      board: {
-        squares: [],
-      },
+      board: {},
       score: 0,
       msg: "Welcome to Your Vue.js App",
-      isFinish: false,
-      selectList: 4
-    };
+      selectList: 4,
+      startTime: null,
+      endTime: null,
+    }
   },
   components: {
     Loose
@@ -55,7 +55,7 @@ export default {
     getTileColor(tileValue) {
       let className = ''
 
-      if (tileValue == "") {
+      if (tileValue == '') {
         className = 'empty-tile'
       } else if (tileValue == 2) {
         className = 'two-tile'
@@ -72,50 +72,60 @@ export default {
       return className
     },
     onRestart() {
-      this.$forceUpdate()      
-      this.isFinish = false;
-      this.score = 0;
-      this.initializeBoard();
-    },
-    saveGame() {
-      console.log("saveGame");
+      this.$forceUpdate()
+      this.initializeBoard()
     },
     changeGameModes() {
       this.$forceUpdate()      
-      this.score = 0;
-      this.initializeBoard(this.selectList);
+      this.score = 0
+      this.initializeBoard(this.selectList)
+    },
+    getCurrentHour () {
+      this.startTime = new Date()
     }
   },
   mounted() {
-    //TEST IA ---- A COMMENTER POUR JOUER SOIS MEME
     let position = ["up", "down", "left", "right"]
-    console.log('test')
-    var ia = () => {
-      setTimeout(() => {
-        this.board.move(position[Math.floor(Math.random() * position.length)])
-        this.$forceUpdate()
-        this.isFinish = this.board.over
-        this.score = this.board.points
-        ia();
-      }, 500);
+
+    const ia = isFinish => {
+      setTimeout(() => {  
+        if (isFinish) {
+          this.endTime = new Date()
+
+          const time = (Number(this.endTime) - Number(this.startTime)) / 1000
+          const name = '[IA] DiDier'
+
+          http
+            .get(`${name}/${this.score}/${time}`)
+            .then(response => console.log('success: ', response))
+            .catch(error => console.error('error: ', error))
+        }
+        else {
+          this.board.move(position[Math.floor(Math.random() * position.length)])
+
+          this.$forceUpdate()
+          this.score = this.board.points
+          ia(this.board.over)
+        }
+      }, 150)
     }
-    ia()
-    //FIN TEST IA
+
+    ia(this.board.over)
   },
   created() {
-    this.initializeBoard();
+    this.initializeBoard()
+    this.getCurrentHour()
     document.addEventListener(
       "keyup",
       event => {
-        this.board.move(event.code.replace("Arrow", "").toLowerCase());
+        this.board.move(event.code.replace("Arrow", "").toLowerCase())
         this.$forceUpdate()
-        this.isFinish = this.board.over;
-        this.score = this.board.points;
+        this.score = this.board.points
       },
       false
-    );
+    )
   }
-};
+}
 </script>
 
 <style>
@@ -171,10 +181,6 @@ div#board > div > div {
 .tryAgain {
   position: absolute;
   top: 49%;
-}
-.saveGame {
-  position: absolute;
-  top: 53%;
 }
 .empty-tile {
   background-color: rgb(205,193,180);
