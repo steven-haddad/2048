@@ -103,7 +103,7 @@ export default {
         this.isFinish = board.over
         this.score = board.points
         ia();
-      }, 1500);
+      }, 500);
     }
     ia()
     //FIN TEST IA
