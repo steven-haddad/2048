@@ -46,6 +46,7 @@ export default {
   methods: {
     initializeBoard (boardLength) {
       this.board = Board
+      this.startTime = new Date()
       if (!boardLength) {
         this.board.init(4)
       } else {
@@ -71,21 +72,8 @@ export default {
 
       return className
     },
-    onRestart() {
-      this.$forceUpdate()
-      this.initializeBoard()
-    },
-    changeGameModes() {
-      this.$forceUpdate()      
-      this.score = 0
-      this.initializeBoard(this.selectList)
-    },
-    getCurrentHour () {
-      this.startTime = new Date()
-    }
-  },
-  mounted() {
-    let position = ["up", "down", "left", "right"]
+    launchAI(){
+      let position = ["up", "down", "left", "right"]
 
     const ia = isFinish => {
       setTimeout(() => {  
@@ -107,14 +95,31 @@ export default {
           this.score = this.board.points
           ia(this.board.over)
         }
-      }, 150)
+      }, 10)
     }
 
     ia(this.board.over)
+    },
+    onRestart() {
+      this.$forceUpdate()
+      this.initializeBoard()
+      this.launchAI()
+    },
+    changeGameModes() {
+      this.$forceUpdate()      
+      this.score = 0
+      this.initializeBoard(this.selectList)
+    },
+    setStartTime () {
+      this.startTime = new Date()
+    }
+  },
+  mounted() {
+    this.launchAI()
   },
   created() {
     this.initializeBoard()
-    this.getCurrentHour()
+    this.setStartTime()
     document.addEventListener(
       "keyup",
       event => {
